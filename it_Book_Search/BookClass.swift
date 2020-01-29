@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Data: Codable {
+struct BooksData: Codable {
     var error: String
     var total: String
     var books: [Book]
