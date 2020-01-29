@@ -10,7 +10,7 @@ import UIKit
 
 
 struct BookRequest {
-    
+
     let resourseURL: URL
 //    var bookList: Data
     
@@ -33,16 +33,20 @@ struct BookRequest {
     
 }
 
+
+
 class TableViewController: UITableViewController {
     
     var data1 = BookRequest.init(bookSearch: "new")
-    var dataRecieved: Data?
+    var dataRecieved: BooksData?
         
     var books: Book?
     
     override func viewDidLoad() {
         super.viewDidLoad()
- 
+        
+      let data = data1
+        self.dataRecieved = try! JSONDecoder().decode(BooksData.self, from: data)
         
     }
     
