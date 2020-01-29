@@ -8,6 +8,12 @@
 
 import Foundation
 
+struct Data: Codable {
+    var error: String
+    var total: String
+    var books: [Book]
+}
+
 struct Book: Codable {
     var title: String
     var subtitle: String
@@ -15,5 +21,5 @@ struct Book: Codable {
     var price: String
     var image: String
     var url: String
-
+    
 }
