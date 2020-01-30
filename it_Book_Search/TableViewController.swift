@@ -24,11 +24,10 @@ class BookRequest {
         let task = URLSession.shared.dataTask(with: resourseURL)
         {(data, response, error) in
             guard let data = data else { return }
-           // print(String(data: data, encoding: .utf8)!)
+            // print(String(data: data, encoding: .utf8)!)
             viewController.parseData(data: data)
         }
         task.resume()
-        viewController.tableView.reloadData()
     }
     
 }
@@ -39,34 +38,30 @@ class TableViewController: UITableViewController {
     var searchRequest = "new"
     var request: BookRequest!
     var books: Book?
-
+    
     
     
     @IBOutlet weak var searchField: UITextField!
     
-
+    
     @IBAction func searchButtonTapped(_ sender: Any) {
         searchRequest = searchField.text ?? "new"
         requestData()
-       // tableView.reloadData()
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         requestData()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        tableView.reloadData()
-    }
+    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return booksData?.books.count ?? 0
+        return booksData?.books.count ?? 0
     }
     
     
@@ -77,18 +72,27 @@ class TableViewController: UITableViewController {
         cell.subtitleLabel.text = booksData?.books[indexPath.row].subtitle
         cell.priceLabel.text = booksData?.books[indexPath.row].price
         cell.isbn13.text = booksData?.books[indexPath.row].isbn13
+//        URL(string: <#T##String#>)
+        var imageData = try? Data(contentsOf: URL(string: (booksData?.books[indexPath.row].image)!)!)
+        print(booksData?.books[indexPath.row].image)
+        if let data = imageData {
+            cell.bookImageView.image = UIImage(data: data)
+        }
         
         return cell
     }
     
     func parseData(data: Data) {
         self.booksData = try! JSONDecoder().decode(BooksData.self, from: data)
-        tableView.reloadData()
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     
     func requestData(){
         self.request = BookRequest(bookSearch: searchRequest, viewController: self)
-
+        
     }
 }
