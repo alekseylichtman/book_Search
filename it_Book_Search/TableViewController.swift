@@ -9,13 +9,13 @@
 import UIKit
 
 
-struct BookRequest {
-
+class BookRequest {
+    
     let resourseURL: URL
-//    var bookList: Data
+
     
     init(bookSearch: String) {
-                
+        
         var url = "https://api.itbook.store/1.0/\(bookSearch)"
         guard let resourseURL = URL(string: url) else {fatalError()}
         
@@ -25,28 +25,28 @@ struct BookRequest {
         {(data, response, error) in
             guard let data = data else { return }
             print(String(data: data, encoding: .utf8)!)
-            print(data)
         }
-
         task.resume()
     }
     
 }
 
-
-
 class TableViewController: UITableViewController {
     
-    var data1 = BookRequest.init(bookSearch: "new")
     var dataRecieved: BooksData?
-        
+    var dataToParse: Data!
+    var searchRequest = "new"
+    
+    
     var books: Book?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-      let data = data1
-        self.dataRecieved = try! JSONDecoder().decode(BooksData.self, from: data)
+        var request = BookRequest(bookSearch: searchRequest)
+
+        let data = dataToParse
+        self.dataRecieved = try! JSONDecoder().decode(BooksData.self, from: data!)
+        print(dataRecieved)
         
     }
     
